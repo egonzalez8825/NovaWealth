@@ -9,7 +9,7 @@
 const ODDS_API_KEY = '5350de570a70d264994c428b70b24c1d'; // Replace with your actual key
 
 // Cache duration (2 minutes for odds - they change frequently)
-const CACHE_DURATION = 2 * 60 * 1000;
+const SPORTS_CACHE_DURATION = 2 * 60 * 1000;
 
 // Sports to track
 const SPORTS = {
@@ -29,7 +29,7 @@ const MARKETS = 'h2h,spreads,totals'; // Moneyline, spreads, over/under
 
 function isCacheValid(timestamp) {
     if (!timestamp) return false;
-    return (Date.now() - timestamp) < CACHE_DURATION;
+    return (Date.now() - timestamp) < SPORTS_CACHE_DURATION;
 }
 
 function getFromCache(key) {
