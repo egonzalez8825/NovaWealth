@@ -125,8 +125,10 @@ async function fetchStockQuote(symbol) {
         }
         
         const quote = data['Global Quote'];
-        if (!quote) {
-            throw new Error(`No quote data for ${symbol}`);
+   if (!quote || Object.keys(quote).length === 0) {
+       console.log('API Response:', data);
+       throw new Error(`No quote data for ${symbol}. Response: ${JSON.stringify(data)}`);
+   }
         }
         
         // Cache the result
