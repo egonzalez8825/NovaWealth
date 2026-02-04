@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaWealth - Long-Term Investment Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #c9a961;
+            --accent: #2d5a3d;
+            --bg: #fafaf8;
+            --card-bg: #ffffff;
+            --text: #2c2c2c;
+            --text-muted: #6b6b6b;
+            --border: #e5e5e0;
+            --green: #2d7a4f;
+            --red: #c94444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--secondary);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-accent {
+            color: var(--secondary);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s;
+        }
+
+        .nav a:hover {
+            color: var(--secondary);
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2a2a2a 100%);
+            color: white;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(201,169,97,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.5; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 700px;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat {
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .market-tabs {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 73px;
+            z-index: 90;
+            animation: slideDown 0.6s ease-out 0.3s both;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+        }
+
+        .tab {
+            padding: 1.2rem 2rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .tab:hover {
+            color: var(--text);
+            background: rgba(201,169,97,0.05);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--secondary);
+            background: rgba(201,169,97,0.08);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .section-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--secondary);
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transform: translateY(-4px);
+        }
+
+        .card:hover::before {
+            height: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .card-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-stock {
+            background: rgba(45, 90, 61, 0.1);
+            color: var(--accent);
+        }
+
+        .badge-real-estate {
+            background: rgba(201, 169, 97, 0.15);
+            color: #8b6d3a;
+        }
+
+        .badge-sports {
+            background: rgba(220, 38, 38, 0.1);
+            color: #991b1b;
+        }
+
+        .badge-betting {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1e40af;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .positive {
+            color: var(--green);
+        }
+
+        .negative {
+            color: var(--red);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(201,169,97,0.05) 0%, rgba(45,90,61,0.05) 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-placeholder::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, rgba(201,169,97,0.2), transparent);
+            clip-path: polygon(0 100%, 10% 85%, 20% 90%, 30% 70%, 40% 75%, 50% 60%, 60% 65%, 70% 50%, 80% 55%, 90% 40%, 100% 45%, 100% 100%);
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .featured-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(201,169,97,0.03) 100%);
+            pointer-events: none;
+        }
+
+        .analysis-tag {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .featured-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .featured-excerpt {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: gap 0.3s;
+        }
+
+        .read-more:hover {
+            gap: 1rem;
+        }
+
+        .sidebar-card {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(201,169,97,0.3);
+        }
+
+        .insight-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .insight-meta {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .data-table {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: rgba(201,169,97,0.03);
+        }
+
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                display: none;
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        .stagger-6 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    Nova<span class="logo-accent">Wealth</span>
+                </div>
+                <nav class="nav">
+                    <a href="#markets">Markets</a>
+                    <a href="#properties">Properties</a>
+                    <a href="#analysis">Analysis</a>
+                    <a href="#sports">Sports</a>
+                    <a href="#challenge">$100K Challenge</a>
+                    <a href="#portfolio">Portfolio</a>
+                    <a href="#research">Research</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Long-Term Investment<br>Intelligence</h1>
+                <p>Comprehensive market analysis merging stock market insights with real estate fundamentals for the strategic long-term investor.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">$2.4T</div>
+                        <div class="stat-label">Assets Tracked</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">18.5K</div>
+                        <div class="stat-label">Properties Analyzed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">450+</div>
+                        <div class="stat-label">Markets Covered</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="market-tabs">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('overview')">Overview</button>
+                <button class="tab" onclick="switchTab('stocks')">Stock Market</button>
+                <button class="tab" onclick="switchTab('realestate')">Real Estate</button>
+                <button class="tab" onclick="switchTab('sports')">Sports & Betting</button>
+                <button class="tab" onclick="switchTab('challenge')">$100K Challenge</button>
+                <button class="tab" onclick="switchTab('comparison')">Cross-Market Analysis</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-section" id="overview-content">
+            <div class="featured-grid">
+                <div class="featured-card">
+                    <div class="analysis-tag">Featured Analysis</div>
+                    <h2 class="featured-title">Multi-Family Housing REITs Show 12% Yield Advantage in Current Rate Environment</h2>
+                    <p class="featured-excerpt">As interest rates stabilize, institutional-grade multi-family REITs are demonstrating superior risk-adjusted returns compared to direct property ownership, particularly in Sun Belt markets with strong demographic tailwinds.</p>
+                    <a href="#" class="read-more">Read Full Analysis →</a>
+                </div>
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Market Insights</h3>
+                    <div class="insight-item">
+                        <div class="insight-title">S&P 500 Dividend Aristocrats</div>
+                        <div class="insight-meta">25-year track record • 3.2% avg yield</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Austin Cap Rate Compression</div>
+                        <div class="insight-meta">Class A properties • 4.8% cap rate</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Tech Sector Free Cash Flow</div>
+                        <div class="insight-meta">Q4 2025 • +18% YoY growth</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Top Long-Term Opportunities</h2>
+                <div class="section-meta">Updated 2 hours ago</div>
+            </div>
+
+            <div class="grid">
+                <div class="card stagger-1">
+                    <div class="card-header">
+                        <h3 class="card-title">Apple Inc. (AAPL)</h3>
+                        <span class="card-badge badge-stock">Stock</span>
+                    </div>
+                    <div class="chart-placeholder"></div>
+                    <div class="metric-row">
+                        <span class="metric-label">P/E Ratio</span>
+                        <span class="metric-value">28.4</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Dividend Yield</span>
+                        <span class="metric-value positive">0.52%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">5-Year CAGR</span>
+                        <span class="metric-value positive">+24.8%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Free Cash Flow</span>
+                        <span class="metric-value">$110.5B</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Market Cap</span>
+                        <span class="metric-value">$3.2T</span>
+                    </div>
+                </div>
+
+                <div class="card stagger-2">
+                    <div class="card-header">
+                        <h3 class="card-title">Phoenix Multi-Family</h3>
+                        <span class="card-badge badge-real-estate">Real Estate</span>
+                    </div>
+                    <div class="chart-placeholder"></div>
+                    <div class="metric-row">
+                        <span class="metric-label">Median Price</span>
+                        <span class="metric-value">$425K</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cap Rate</span>
+                        <span class="metric-value positive">5.2%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">YoY Appreciation</span>
+                        <span class="metric-value positive">+8.3%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Occupancy Rate</span>
+                        <span class="metric-value">96.5%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Population Growth</span>
+                        <span class="metric-value positive">+2.1%</span>
+                    </div>
+                </div>
+
+                <div class="card stagger-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Microsoft Corp (MSFT)</h3>
+                        <span class="card-badge badge-stock">Stock</span>
+                    </div>
+                    <div class="chart-placeholder"></div>
+                    <div class="metric-row">
+                        <span class="metric-label">P/E Ratio</span>
+                        <span class="metric-value">34.2</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Dividend Yield</span>
+                        <span class="metric-value positive">0.78%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">5-Year CAGR</span>
+                        <span class="metric-value positive">+26.3%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cloud Revenue Growth</span>
+                        <span class="metric-value positive">+29%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">ROE</span>
+                        <span class="metric-value">42.8%</span>
+                    </div>
+                </div>
+
+                <div class="card stagger-4">
+                    <div class="card-header">
+                        <h3 class="card-title">Dallas Industrial</h3>
+                        <span class="card-badge badge-real-estate">Real Estate</span>
+                    </div>
+                    <div class="chart-placeholder"></div>
+                    <div class="metric-row">
+                        <span class="metric-label">Price per SF</span>
+                        <span class="metric-value">$185</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cap Rate</span>
+                        <span class="metric-value positive">6.1%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">YoY Appreciation</span>
+                        <span class="metric-value positive">+11.2%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Vacancy Rate</span>
+                        <span class="metric-value positive">3.8%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Job Growth</span>
+                        <span class="metric-value positive">+3.4%</span>
+                    </div>
+                </div>
+
+                <div class="card stagger-5">
+                    <div class="card-header">
+                        <h3 class="card-title">Realty Income (O)</h3>
+                        <span class="card-badge badge-stock">REIT</span>
+                    </div>
+                    <div class="chart-placeholder"></div>
+                    <div class="metric-row">
+                        <span class="metric-label">Dividend Yield</span>
+                        <span class="metric-value positive">5.4%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Monthly Dividend</span>
+                        <span class="metric-value">$0.263</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Occupancy</span>
+                        <span class="metric-value">98.6%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">FFO Growth</span>
+                        <span class="metric-value positive">+3.8%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Dividend Streak</span>
+                        <span class="metric-value">29 years</span>
+                    </div>
+                </div>
+
+                <div class="card stagger-6">
+                    <div class="card-header">
+                        <h3 class="card-title">Atlanta Residential</h3>
+                        <span class="card-badge badge-real-estate">Real Estate</span>
+                    </div>
+                    <div class="chart-placeholder"></div>
+                    <div class="metric-row">
+                        <span class="metric-label">Median Price</span>
+                        <span class="metric-value">$365K</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cap Rate</span>
+                        <span class="metric-value positive">5.8%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">YoY Appreciation</span>
+                        <span class="metric-value positive">+7.9%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Days on Market</span>
+                        <span class="metric-value">28</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Rent Growth</span>
+                        <span class="metric-value positive">+5.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2 class="section-title">Key Market Indicators</h2>
+                <div class="section-meta">Real-time data from Zillow, Realtor.com & Market APIs</div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Market</th>
+                        <th>Asset Type</th>
+                        <th>Current Value</th>
+                        <th>1-Year Return</th>
+                        <th>5-Year CAGR</th>
+                        <th>Risk Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>S&P 500 Index</strong></td>
+                        <td>Equity</td>
+                        <td>5,124.35</td>
+                        <td class="positive">+18.2%</td>
+                        <td class="positive">+14.5%</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nashville SFR</strong></td>
+                        <td>Residential RE</td>
+                        <td>$485K avg</td>
+                        <td class="positive">+9.4%</td>
+                        <td class="positive">+12.8%</td>
+                        <td>Low-Med</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vanguard Div Appr (VIG)</strong></td>
+                        <td>Dividend ETF</td>
+                        <td>$182.45</td>
+                        <td class="positive">+12.8%</td>
+                        <td class="positive">+11.2%</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Miami Multi-Family</strong></td>
+                        <td>Commercial RE</td>
+                        <td>$395/SF avg</td>
+                        <td class="positive">+14.5%</td>
+                        <td class="positive">+16.3%</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Johnson & Johnson (JNJ)</strong></td>
+                        <td>Dividend Aristocrat</td>
+                        <td>$165.32</td>
+                        <td class="positive">+6.5%</td>
+                        <td class="positive">+8.9%</td>
+                        <td>Very Low</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Austin Office Space</strong></td>
+                        <td>Commercial RE</td>
+                        <td>$425/SF avg</td>
+                        <td class="negative">-2.3%</td>
+                        <td class="positive">+4.2%</td>
+                        <td>Med-High</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sports Section -->
+        <div class="content-section" id="sports-content" style="background: var(--bg); padding: 4rem 0;">
+            <div class="section-header">
+                <h2 class="section-title">Today's Sports & Betting Intelligence</h2>
+                <div class="section-meta">Live from ESPN • Updated 15 min ago</div>
+            </div>
+
+            <div class="featured-grid">
+                <div class="featured-card">
+                    <div class="analysis-tag" style="background: #dc2626;">Breaking Sports News</div>
+                    <h2 class="featured-title">Lakers Clinch Playoff Spot with Overtime Victory Over Nuggets</h2>
+                    <p class="featured-excerpt">LeBron James delivers 35 points and 12 assists as the Lakers secure their postseason berth with a thrilling 128-124 overtime win. Anthony Davis added 28 points and dominated the boards with 16 rebounds in the crucial victory.</p>
+                    <a href="#" class="read-more">Full Game Recap →</a>
+                </div>
+                <div class="sidebar-card" style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);">
+                    <h3 class="sidebar-title">Trending on ESPN</h3>
+                    <div class="insight-item">
+                        <div class="insight-title">NFL Draft: Top QB Prospects</div>
+                        <div class="insight-meta">College Football • 2 hours ago</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Champions League Semifinals Set</div>
+                        <div class="insight-meta">Soccer • 4 hours ago</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Tiger Woods Comeback Update</div>
+                        <div class="insight-meta">Golf • 6 hours ago</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">NBA MVP Race Heats Up</div>
+                        <div class="insight-meta">Basketball • 8 hours ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2 class="section-title">Today's Betting Recommendations</h2>
+                <div class="section-meta">For entertainment purposes only • Always bet responsibly</div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lakers vs Celtics</h3>
+                        <span class="card-badge badge-betting">NBA</span>
+                    </div>
+                    <div style="padding: 1.5rem 0; border-bottom: 2px solid var(--border); margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">Tonight, 7:30 PM EST</span>
+                            <span style="color: var(--text-muted);">TD Garden, Boston</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Spread</span>
+                        <span class="metric-value">Celtics -4.5</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Over/Under</span>
+                        <span class="metric-value">223.5</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Moneyline</span>
+                        <span class="metric-value">BOS -180 / LAL +155</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label"><strong>Recommendation</strong></span>
+                        <span class="metric-value positive"><strong>Lakers +4.5</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 122, 79, 0.08); border-left: 3px solid var(--green); font-size: 0.9rem; line-height: 1.6;">
+                        Lakers have covered in 7 of last 10 away games. LeBron averages 31 PPG vs Boston this season.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Yankees vs Red Sox</h3>
+                        <span class="card-badge badge-betting">MLB</span>
+                    </div>
+                    <div style="padding: 1.5rem 0; border-bottom: 2px solid var(--border); margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">Tonight, 8:10 PM EST</span>
+                            <span style="color: var(--text-muted);">Fenway Park</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Run Line</span>
+                        <span class="metric-value">Yankees -1.5</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Over/Under</span>
+                        <span class="metric-value">8.5 Runs</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Moneyline</span>
+                        <span class="metric-value">NYY -145 / BOS +125</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label"><strong>Recommendation</strong></span>
+                        <span class="metric-value positive"><strong>Over 8.5</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 122, 79, 0.08); border-left: 3px solid var(--green); font-size: 0.9rem; line-height: 1.6;">
+                        Both bullpens ranked bottom 10 in ERA. Wind blowing out at 12 MPH. High-scoring rivalry matchup expected.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Man City vs Arsenal</h3>
+                        <span class="card-badge badge-betting">EPL</span>
+                    </div>
+                    <div style="padding: 1.5rem 0; border-bottom: 2px solid var(--border); margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">Tomorrow, 12:30 PM EST</span>
+                            <span style="color: var(--text-muted);">Etihad Stadium</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">3-Way Line</span>
+                        <span class="metric-value">City +105 / Draw +240 / Arsenal +280</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Over/Under</span>
+                        <span class="metric-value">2.5 Goals</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Both Teams Score</span>
+                        <span class="metric-value">Yes -140 / No +110</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label"><strong>Recommendation</strong></span>
+                        <span class="metric-value positive"><strong>BTTS Yes</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 122, 79, 0.08); border-left: 3px solid var(--green); font-size: 0.9rem; line-height: 1.6;">
+                        Both teams have scored in 8 of last 10 meetings. Arsenal averaging 2.1 goals/game. Elite attacking matchup.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Suns vs Warriors</h3>
+                        <span class="card-badge badge-betting">NBA</span>
+                    </div>
+                    <div style="padding: 1.5rem 0; border-bottom: 2px solid var(--border); margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">Tonight, 10:00 PM EST</span>
+                            <span style="color: var(--text-muted);">Chase Center, SF</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Spread</span>
+                        <span class="metric-value">Warriors -6.5</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Over/Under</span>
+                        <span class="metric-value">231.5</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Moneyline</span>
+                        <span class="metric-value">GSW -245 / PHX +200</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label"><strong>Recommendation</strong></span>
+                        <span class="metric-value positive"><strong>Warriors -6.5</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 122, 79, 0.08); border-left: 3px solid var(--green); font-size: 0.9rem; line-height: 1.6;">
+                        Suns on B2B with travel. Curry averaging 34 PPG at home last 5 games. Warriors 12-3 ATS at Chase Center.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Capitals vs Rangers</h3>
+                        <span class="card-badge badge-betting">NHL</span>
+                    </div>
+                    <div style="padding: 1.5rem 0; border-bottom: 2px solid var(--border); margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">Tonight, 7:00 PM EST</span>
+                            <span style="color: var(--text-muted);">Madison Square Garden</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Puck Line</span>
+                        <span class="metric-value">Rangers -1.5 (+145)</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Over/Under</span>
+                        <span class="metric-value">6 Goals</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Moneyline</span>
+                        <span class="metric-value">NYR -165 / WSH +140</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label"><strong>Recommendation</strong></span>
+                        <span class="metric-value positive"><strong>Under 6</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 122, 79, 0.08); border-left: 3px solid var(--green); font-size: 0.9rem; line-height: 1.6;">
+                        Shesterkin in net (2.18 GAA). Defensive battle expected. Under hit in 6 of last 8 Rangers home games.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Player Props Parlay</h3>
+                        <span class="card-badge badge-betting">Multi-Sport</span>
+                    </div>
+                    <div style="padding: 1.5rem 0; border-bottom: 2px solid var(--border); margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 1.1rem;">Tonight's Special</span>
+                            <span style="color: var(--secondary); font-weight: 600;">+425 Odds</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">LeBron James</span>
+                        <span class="metric-value">Over 27.5 Points</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Aaron Judge</span>
+                        <span class="metric-value">Over 1.5 Total Bases</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Stephen Curry</span>
+                        <span class="metric-value">Over 4.5 Three-Pointers</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label"><strong>Parlay Payout</strong></span>
+                        <span class="metric-value positive"><strong>$100 → $525</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 122, 79, 0.08); border-left: 3px solid var(--green); font-size: 0.9rem; line-height: 1.6;">
+                        High-confidence legs. All players have hit these marks in 70%+ of recent games. Bet responsibly.
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border: 2px solid var(--secondary); border-radius: 4px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary);">⚠️ Responsible Gambling Notice</h3>
+                <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 0.5rem;">
+                    These betting recommendations are for <strong>entertainment purposes only</strong>. Sports betting involves risk and should only be done with money you can afford to lose. Never chase losses. If you or someone you know has a gambling problem, call the National Problem Gambling Helpline at <strong>1-800-522-4700</strong>.
+                </p>
+                <p style="color: var(--text-muted); line-height: 1.7; font-size: 0.9rem;">
+                    Must be 21+ to bet. Please gamble responsibly. NovaWealth is not responsible for any betting losses.
+                </p>
+            </div>
+
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2 class="section-title">More Sports Headlines</h2>
+                <div class="section-meta">Latest from ESPN</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem;">
+                    <span class="card-badge badge-sports" style="margin-bottom: 0.8rem; display: inline-block;">NFL</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4;">
+                        Chiefs Trade Up in Mock Draft for Elite Pass Rusher
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                        Kansas City addresses defensive needs with projected first-round selection.
+                    </p>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">2 hours ago</span>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem;">
+                    <span class="card-badge badge-sports" style="margin-bottom: 0.8rem; display: inline-block;">NBA</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4;">
+                        Giannis Antetokounmpo Questionable for Tomorrow's Game
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                        Bucks star dealing with knee soreness ahead of crucial playoff positioning matchup.
+                    </p>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">3 hours ago</span>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem;">
+                    <span class="card-badge badge-sports" style="margin-bottom: 0.8rem; display: inline-block;">MLB</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4;">
+                        Shohei Ohtani Progressing Ahead of Schedule in Rehab
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                        Dodgers superstar could return to pitching sooner than expected this season.
+                    </p>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">5 hours ago</span>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem;">
+                    <span class="card-badge badge-sports" style="margin-bottom: 0.8rem; display: inline-block;">Soccer</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4;">
+                        Messi Leads Inter Miami to Third Straight Victory
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                        Argentine star scores brace in dominant 3-0 win over Atlanta United.
+                    </p>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">6 hours ago</span>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem;">
+                    <span class="card-badge badge-sports" style="margin-bottom: 0.8rem; display: inline-block;">Tennis</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4;">
+                        Alcaraz Advances to Miami Open Quarterfinals
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                        Top seed cruises past challenger in straight sets, extends winning streak.
+                    </p>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">7 hours ago</span>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem;">
+                    <span class="card-badge badge-sports" style="margin-bottom: 0.8rem; display: inline-block;">Golf</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4;">
+                        Rory McIlroy Takes Lead at The Players Championship
+                    </h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                        Northern Irishman shoots 65 in second round to move to 12-under par.
+                    </p>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">8 hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- $100K Challenge Section -->
+    <div class="container">
+        <div class="content-section" id="challenge-content" style="background: var(--bg); padding: 4rem 0;">
+            <!-- Challenge Header with Instagram CTA -->
+            <div style="background: linear-gradient(135deg, var(--primary) 0%, #2a2a2a 100%); color: white; padding: 4rem; border-radius: 8px; margin-bottom: 3rem; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: url('data:image/svg+xml,<svg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><defs><pattern id=\"challenge-grid\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\"><path d=\"M 40 0 L 0 0 0 40\" fill=\"none\" stroke=\"rgba(201,169,97,0.1)\" stroke-width=\"1\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23challenge-grid)\"/></svg>'); opacity: 0.3;"></div>
+                
+                <div style="position: relative; z-index: 2;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <h1 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 0; font-weight: 700;">
+                            The $100K Challenge
+                        </h1>
+                        <div style="background: var(--secondary); color: var(--primary); padding: 0.5rem 1.5rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem;">
+                            LIVE
+                        </div>
+                    </div>
+                    
+                    <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9; max-width: 800px;">
+                        Follow my journey from $10,000 to $100,000 through strategic long-term investing. Real portfolio, real results, transparent updates.
+                    </p>
+                    
+                    <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+                        <a href="https://instagram.com/YOUR_INSTAGRAM_HANDLE" target="_blank" style="display: inline-flex; align-items: center; gap: 1rem; background: linear-gradient(135deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); padding: 1rem 2.5rem; border-radius: 50px; color: white; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: transform 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                            Follow the Journey on Instagram
+                        </a>
+                        
+                        <div style="display: flex; gap: 3rem;">
+                            <div>
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--secondary);">$24,567</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Current Value</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5rem; font-weight: 700; color: #4ade80;">+145.67%</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Total Return</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5rem; font-weight: 700; color: white;">24.5%</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Progress</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Holdings Section -->
+            <div class="section-header">
+                <h2 class="section-title">Current Portfolio Holdings</h2>
+                <div class="section-meta">Last updated: Today, 2:45 PM EST</div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Apple Inc. (AAPL)</h3>
+                            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem;">Technology • Core Holding</div>
+                        </div>
+                        <span class="card-badge badge-stock">Stock</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Shares Owned</span>
+                        <span class="metric-value">15 shares</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Cost Basis</span>
+                        <span class="metric-value">$152.30</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Current Price</span>
+                        <span class="metric-value">$185.42</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Value</span>
+                        <span class="metric-value">$2,781.30</span>
+                    </div>
+                    <div class="metric-row" style="border-top: 2px solid var(--border); padding-top: 1rem; margin-top: 0.5rem;">
+                        <span class="metric-label"><strong>Gain/Loss</strong></span>
+                        <span class="metric-value positive"><strong>+$496.80 (+21.7%)</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 90, 61, 0.08); border-left: 3px solid var(--accent); font-size: 0.9rem;">
+                        <strong>My Target:</strong> $225/share by Dec 2026
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Microsoft (MSFT)</h3>
+                            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem;">Technology • Growth Pick</div>
+                        </div>
+                        <span class="card-badge badge-stock">Stock</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Shares Owned</span>
+                        <span class="metric-value">12 shares</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Cost Basis</span>
+                        <span class="metric-value">$338.50</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Current Price</span>
+                        <span class="metric-value">$425.75</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Value</span>
+                        <span class="metric-value">$5,109.00</span>
+                    </div>
+                    <div class="metric-row" style="border-top: 2px solid var(--border); padding-top: 1rem; margin-top: 0.5rem;">
+                        <span class="metric-label"><strong>Gain/Loss</strong></span>
+                        <span class="metric-value positive"><strong>+$1,047.00 (+25.8%)</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 90, 61, 0.08); border-left: 3px solid var(--accent); font-size: 0.9rem;">
+                        <strong>My Target:</strong> $500/share by Jun 2027 (AI boom)
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Realty Income (O)</h3>
+                            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem;">REIT • Monthly Dividend</div>
+                        </div>
+                        <span class="card-badge badge-real-estate">REIT</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Shares Owned</span>
+                        <span class="metric-value">85 shares</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Cost Basis</span>
+                        <span class="metric-value">$58.20</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Current Price</span>
+                        <span class="metric-value">$62.15</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Annual Dividends</span>
+                        <span class="metric-value positive">$268.05/year</span>
+                    </div>
+                    <div class="metric-row" style="border-top: 2px solid var(--border); padding-top: 1rem; margin-top: 0.5rem;">
+                        <span class="metric-label"><strong>Gain/Loss</strong></span>
+                        <span class="metric-value positive"><strong>+$335.75 (+6.8%)</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 90, 61, 0.08); border-left: 3px solid var(--accent); font-size: 0.9rem;">
+                        <strong>My Strategy:</strong> Hold forever, reinvest dividends
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">VOO (S&P 500 ETF)</h3>
+                            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem;">ETF • Core Index</div>
+                        </div>
+                        <span class="card-badge badge-stock">ETF</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Shares Owned</span>
+                        <span class="metric-value">25 shares</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Cost Basis</span>
+                        <span class="metric-value">$398.50</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Current Price</span>
+                        <span class="metric-value">$512.34</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Value</span>
+                        <span class="metric-value">$12,808.50</span>
+                    </div>
+                    <div class="metric-row" style="border-top: 2px solid var(--border); padding-top: 1rem; margin-top: 0.5rem;">
+                        <span class="metric-label"><strong>Gain/Loss</strong></span>
+                        <span class="metric-value positive"><strong>+$2,846.00 (+28.6%)</strong></span>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(45, 90, 61, 0.08); border-left: 3px solid var(--accent); font-size: 0.9rem;">
+                        <strong>My Plan:</strong> DCA $500/month, 30-year hold
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog/Update Section -->
+            <div class="section-header" style="margin-top: 4rem;">
+                <h2 class="section-title">Investment Journal & Updates</h2>
+                <div class="section-meta">My thoughts, strategy, and lessons learned</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+                <!-- Latest Blog Post -->
+                <div class="featured-card">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                        <div class="analysis-tag">Latest Update</div>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">February 3, 2026</span>
+                    </div>
+                    <h2 class="featured-title">Why I'm Doubling Down on AI Stocks This Quarter</h2>
+                    <p class="featured-excerpt">
+                        After analyzing Q4 earnings, I'm convinced we're still in the early innings of the AI revolution. Microsoft's Azure AI revenue jumped 31% YoY, and their Copilot integration is just scratching the surface. Here's my plan to increase my MSFT position from 12 to 20 shares over the next 60 days through strategic DCA buying...
+                    </p>
+                    <div style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(201,169,97,0.08); border-left: 4px solid var(--secondary);">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--primary);">📊 Key Action Items:</div>
+                        <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Buy 2 MSFT shares every 2 weeks (8 total purchases)</li>
+                            <li>Target entry points: $415-425 range</li>
+                            <li>Set aside $3,400 from side hustle income</li>
+                            <li>Reassess if price hits $450 (may pause)</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="read-more">Read Full Post on Instagram →</a>
+                </div>
+
+                <!-- Quick Stats Sidebar -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Challenge Progress</h3>
+                    <div style="margin-bottom: 2rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.9rem;">Portfolio Value</span>
+                            <span style="font-weight: 600;">$24,567</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: var(--secondary); height: 100%; width: 24.5%;"></div>
+                        </div>
+                        <div style="text-align: right; font-size: 0.8rem; margin-top: 0.3rem; opacity: 0.7;">24.5% to goal</div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-title">Days Active</div>
+                        <div class="insight-meta">427 days (1 year, 2 months)</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Best Performer</div>
+                        <div class="insight-meta">VOO ETF: +28.6%</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Dividend Income</div>
+                        <div class="insight-meta">$847.32 YTD</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title">Next Purchase</div>
+                        <div class="insight-meta">Feb 15 - MSFT (2 shares)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Archive -->
+            <div style="display: grid; gap: 1.5rem;">
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 2rem; display: flex; gap: 2rem; align-items: start;">
+                    <div style="min-width: 120px; text-align: center; padding: 1rem; background: rgba(201,169,97,0.1); border-radius: 4px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: var(--secondary); font-family: 'Playfair Display', serif;">27</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Jan 2026</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">
+                            January Portfolio Review: Down 3.2% But Staying the Course
+                        </h3>
+                        <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+                            Market volatility hit this month, but I'm using it as a buying opportunity. Averaged down on AAPL at $172, added to VOO position. The beauty of long-term investing is that temporary dips don't scare me anymore...
+                        </p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <span style="background: rgba(45,90,61,0.1); color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Portfolio Review</span>
+                            <span style="background: rgba(45,90,61,0.1); color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Lessons Learned</span>
+                            <a href="#" style="color: var(--secondary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">Read more →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 2rem; display: flex; gap: 2rem; align-items: start;">
+                    <div style="min-width: 120px; text-align: center; padding: 1rem; background: rgba(201,169,97,0.1); border-radius: 4px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: var(--secondary); font-family: 'Playfair Display', serif;">15</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Jan 2026</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">
+                            My 2026 Investment Strategy: 60/30/10 Allocation Explained
+                        </h3>
+                        <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+                            After much analysis, I've settled on a 60% index funds (VOO), 30% individual growth stocks (MSFT, AAPL), and 10% dividend REITs strategy. This gives me broad market exposure while still allowing me to make concentrated bets on companies I believe in...
+                        </p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <span style="background: rgba(45,90,61,0.1); color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Strategy</span>
+                            <span style="background: rgba(45,90,61,0.1); color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Asset Allocation</span>
+                            <a href="#" style="color: var(--secondary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">Read more →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 2rem; display: flex; gap: 2rem; align-items: start;">
+                    <div style="min-width: 120px; text-align: center; padding: 1rem; background: rgba(201,169,97,0.1); border-radius: 4px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: var(--secondary); font-family: 'Playfair Display', serif;">03</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Jan 2026</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">
+                            Why I Sold My Entire Tesla Position (And What I Learned)
+                        </h3>
+                        <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+                            Sometimes you have to admit when you're wrong. I bought TSLA at $242, rode it to $280, then watched it drop to $215. Instead of holding out of pride, I cut my losses at $218 (-9.9%). Here's why this was actually a good decision and what I learned about position sizing...
+                        </p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <span style="background: rgba(201,68,68,0.1); color: var(--red); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Mistakes</span>
+                            <span style="background: rgba(45,90,61,0.1); color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Lessons Learned</span>
+                            <a href="#" style="color: var(--secondary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">Read more →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Future Plans Section -->
+            <div class="section-header" style="margin-top: 4rem;">
+                <h2 class="section-title">My Roadmap to $100K</h2>
+                <div class="section-meta">Strategic plan for the next 3 years</div>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 2.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: rgba(45,90,61,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--accent);">1</div>
+                            <h4 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Build Core Position</h4>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.7;">
+                            Focus on accumulating VOO through consistent DCA. Target: 50 shares by end of 2026 ($25K value).
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: rgba(45,90,61,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--accent);">2</div>
+                            <h4 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Growth Bets</h4>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.7;">
+                            Increase MSFT to 25-30 shares. Add GOOGL position (5-10 shares). Target combined value: $15K.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: rgba(45,90,61,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--accent);">3</div>
+                            <h4 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Income Stream</h4>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.7;">
+                            Grow dividend holdings. Target: $2,000/year in passive dividend income by 2027.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 50px; height: 50px; background: rgba(45,90,61,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: var(--accent);">4</div>
+                            <h4 style="font-size: 1.2rem; font-weight: 600; margin: 0;">Hit $100K Goal</h4>
+                        </div>
+                        <p style="color: var(--text-muted); line-height: 1.7;">
+                            Combination of market growth + consistent contributions. Target date: December 2028.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instagram Gallery Teaser -->
+            <div style="margin-top: 4rem; background: linear-gradient(135deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); padding: 3rem; border-radius: 8px; text-align: center; color: white;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem;">Want Daily Updates?</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95;">
+                    Follow my Instagram for real-time trade alerts, portfolio screenshots, market analysis, and behind-the-scenes content.
+                </p>
+                <a href="https://instagram.com/YOUR_INSTAGRAM_HANDLE" target="_blank" style="display: inline-flex; align-items: center; gap: 1rem; background: white; color: #bc1888; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: transform 0.3s;">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    @YOUR_INSTAGRAM_HANDLE
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Markets</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Stock Analysis</a></li>
+                        <li><a href="#">Real Estate Data</a></li>
+                        <li><a href="#">REITs Overview</a></li>
+                        <li><a href="#">Market Indices</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>$100K Challenge</h3>
+                    <ul class="footer-links">
+                        <li><a href="#challenge">My Portfolio</a></li>
+                        <li><a href="#challenge">Investment Journal</a></li>
+                        <li><a href="https://instagram.com/YOUR_INSTAGRAM_HANDLE" target="_blank">Follow on Instagram</a></li>
+                        <li><a href="#">Email Updates</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Sports</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Sports News</a></li>
+                        <li><a href="#">Betting Picks</a></li>
+                        <li><a href="#">Live Scores</a></li>
+                        <li><a href="#">Responsible Gaming</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Research</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Long-Term Studies</a></li>
+                        <li><a href="#">Market Reports</a></li>
+                        <li><a href="#">Demographic Trends</a></li>
+                        <li><a href="#">Investment Strategies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Portfolio Tracker</a></li>
+                        <li><a href="#">Cap Rate Calculator</a></li>
+                        <li><a href="#">Dividend Screener</a></li>
+                        <li><a href="#">Market Comparisons</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Methodology</a></li>
+                        <li><a href="#">Data Sources</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NovaWealth. Market data aggregated from Zillow, Realtor.com, and leading financial APIs. Not investment advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function switchTab(tab) {
+            // Update active tab styling
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // In a real implementation, this would load different content
+            console.log('Switched to:', tab);
+        }
+
+        // Add scroll-triggered animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+
+    <!-- API Integration Scripts -->
+    <script src="stocks.js"></script>
+    <script src="sports.js"></script>
+</body>
+</html>
