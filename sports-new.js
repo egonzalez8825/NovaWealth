@@ -7,7 +7,7 @@
 
 // Get your FREE RapidAPI key from: https://rapidapi.com
 // Subscribe to API-Football: https://rapidapi.com/api-sports/api/api-football
-const RAPIDAPI_KEY = 'YOUR_RAPIDAPI_KEY_HERE'; // Replace with your actual key
+const RAPIDAPI_KEY = '5350de570a70d264994c428b70b24c1d'; // Replace with your actual key
 
 // Cache duration (5 minutes for sports data)
 const SPORTS_CACHE_DURATION = 5 * 60 * 1000;
