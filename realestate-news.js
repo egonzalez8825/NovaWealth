@@ -6,7 +6,7 @@
 // ==============================================
 
 // Get your FREE API key from: https://newsapi.org/register
-const NEWS_API_KEY = 'YOUR_NEWS_API_KEY_HERE'; // Replace with your actual key
+const NEWS_API_KEY = '849ccd900d66416993485bf59f7a807f'; // Replace with your actual key
 
 // Cache duration (24 hours - news doesn't change that often)
 const NEWS_CACHE_DURATION = 24 * 60 * 60 * 1000;
