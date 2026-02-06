@@ -1,171 +1,147 @@
-// stocks.js - Fetch Real Stock Market Data (Financial Modeling Prep API)
-
+// stocks.js - Working Version
 const FMP_API_KEY = 'cLdDw6rfrPX44T7A1HFNMxah2Ckb3Dk9';
-const STOCK_CACHE_DURATION = 5 * 60 * 1000;
+const STOCK_CACHE_DURATION = 300000;
 const STOCKS_TO_TRACK = ['AAPL', 'MSFT', 'O'];
 
-function isStockCacheValid(timestamp) {
-    if (!timestamp) return false;
-    return (Date.now() - timestamp) < STOCK_CACHE_DURATION;
+function isStockCacheValid(t) {
+    return t && (Date.now() - t) < STOCK_CACHE_DURATION;
 }
 
-function getStockFromCache(key) {
+function getStockFromCache(k) {
     try {
-        const cached = localStorage.getItem(key);
-        if (!cached) return null;
-        const data = JSON.parse(cached);
-        if (isStockCacheValid(data.timestamp)) {
-            console.log(`✅ Using cached data for ${key}`);
-            return data.value;
+        const c = localStorage.getItem(k);
+        if (!c) return null;
+        const d = JSON.parse(c);
+        if (isStockCacheValid(d.timestamp)) {
+            console.log('✅ Using cached data for ' + k);
+            return d.value;
         }
         return null;
-    } catch (error) {
+    } catch (e) {
         return null;
     }
 }
 
-function saveStockToCache(key, value) {
+function saveStockToCache(k, v) {
     try {
-        const data = { timestamp: Date.now(), value: value };
-        localStorage.setItem(key, JSON.stringify(data));
-    } catch (error) {
-        console.error('Cache error:', error);
+        localStorage.setItem(k, JSON.stringify({timestamp: Date.now(), value: v}));
+    } catch (e) {
+        console.error('Cache error:', e);
     }
 }
 
-async function fetchFMPQuote(symbol) {
-    const cacheKey = `fmp_quote_${symbol}`;
-    const cached = getStockFromCache(cacheKey);
-    if (cached) return cached;
+async function fetchFMPQuote(s) {
+    const k = 'fmp_quote_' + s;
+    const c = getStockFromCache(k);
+    if (c) return c;
     
-    const url = `https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${FMP_API_KEY}`;
+    const url = 'https://financialmodelingprep.com/api/v3/quote/' + s + '?apikey=' + FMP_API_KEY;
     
     try {
-        console.log(`🔄 Fetching quote for ${symbol}...`);
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        if (!data || data.length === 0) throw new Error(`No data for ${symbol}`);
-        const quote = data[0];
-        saveStockToCache(cacheKey, quote);
-        return quote;
-    } catch (error) {
-        console.error(`Error fetching ${symbol}:`, error);
-        throw error;
+        console.log('🔄 Fetching quote for ' + s);
+        const r = await fetch(url);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const d = await r.json();
+        if (!d || d.length === 0) throw new Error('No data for ' + s);
+        const q = d[0];
+        saveStockToCache(k, q);
+        return q;
+    } catch (e) {
+        console.error('Error fetching ' + s + ':', e);
+        throw e;
     }
 }
 
-async function fetchFMPProfile(symbol) {
-    const cacheKey = `fmp_profile_${symbol}`;
-    const cached = getStockFromCache(cacheKey);
-    if (cached) return cached;
+async function fetchFMPProfile(s) {
+    const k = 'fmp_profile_' + s;
+    const c = getStockFromCache(k);
+    if (c) return c;
     
-    const url = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${FMP_API_KEY}`;
+    const url = 'https://financialmodelingprep.com/api/v3/profile/' + s + '?apikey=' + FMP_API_KEY;
     
     try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        if (!data || data.length === 0) return null;
-        const profile = data[0];
-        saveStockToCache(cacheKey, profile);
-        return profile;
-    } catch (error) {
-        console.error(`Error fetching profile for ${symbol}:`, error);
+        const r = await fetch(url);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const d = await r.json();
+        if (!d || d.length === 0) return null;
+        const p = d[0];
+        saveStockToCache(k, p);
+        return p;
+    } catch (e) {
+        console.error('Error fetching profile:', e);
         return null;
     }
 }
 
-function calculateStockMetrics(quote, profile) {
+function calculateStockMetrics(q, p) {
     return {
-        symbol: quote.symbol,
-        name: quote.name || profile?.companyName || quote.symbol,
-        price: quote.price || 0,
-        change: quote.change || 0,
-        changePercent: quote.changesPercentage || 0,
-        peRatio: quote.pe || profile?.pe || 'N/A',
-        dividendYield: ((profile?.lastDiv || 0) / (quote.price || 1)) * 100,
-        marketCap: formatMarketCap(quote.marketCap || profile?.mktCap || 0),
-        fiftyTwoWeekHigh: quote.yearHigh || 0,
-        fiftyTwoWeekLow: quote.yearLow || 0,
-        volume: quote.volume || 0
+        symbol: q.symbol,
+        name: q.name || (p && p.companyName) || q.symbol,
+        price: q.price || 0,
+        change: q.change || 0,
+        changePercent: q.changesPercentage || 0,
+        peRatio: q.pe || (p && p.pe) || 'N/A',
+        dividendYield: ((p && p.lastDiv) || 0) / (q.price || 1) * 100,
+        marketCap: formatMarketCap(q.marketCap || (p && p.mktCap) || 0),
+        volume: q.volume || 0
     };
 }
 
-function formatMarketCap(value) {
-    const num = parseFloat(value);
-    if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
-    if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
-    if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
-    return `$${num.toFixed(2)}`;
+function formatMarketCap(v) {
+    const n = parseFloat(v);
+    if (n >= 1e12) return '$' + (n / 1e12).toFixed(2) + 'T';
+    if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+    return '$' + n.toFixed(2);
 }
 
-function formatVolume(value) {
-    const num = parseFloat(value);
-    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
-    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
-    return num.toString();
+function formatVolume(v) {
+    const n = parseFloat(v);
+    if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(2) + 'K';
+    return n.toString();
 }
 
-function updateStockCard(stockData, cardIndex) {
+function updateStockCard(data, idx) {
     const cards = document.querySelectorAll('.card');
-    const stockCards = Array.from(cards).filter(card => card.querySelector('.badge-stock'));
+    const stockCards = Array.from(cards).filter(c => c.querySelector('.badge-stock'));
     
-    if (stockCards[cardIndex]) {
-        const card = stockCards[cardIndex];
-        
+    if (stockCards[idx]) {
+        const card = stockCards[idx];
         const title = card.querySelector('.card-title');
         if (title) {
-            title.textContent = `${stockData.name} (${stockData.symbol})`;
+            title.textContent = data.name + ' (' + data.symbol + ')';
         }
         
-        const chartPlaceholder = card.querySelector('.chart-placeholder');
-        if (chartPlaceholder) {
-            const isPositive = stockData.change >= 0;
-            chartPlaceholder.innerHTML = `
-                <div style="text-align: center;">
-                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary);">
-                        $${stockData.price.toFixed(2)}
-                    </div>
-                    <div style="font-size: 1.1rem; color: ${isPositive ? 'var(--green)' : 'var(--red)'}; margin-top: 0.5rem;">
-                        ${isPositive ? '+' : ''}${stockData.change.toFixed(2)} (${isPositive ? '+' : ''}${stockData.changePercent.toFixed(2)}%)
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
-                        Volume: ${formatVolume(stockData.volume)}
-                    </div>
-                </div>
-            `;
+        const chart = card.querySelector('.chart-placeholder');
+        if (chart) {
+            const isPos = data.change >= 0;
+            const color = isPos ? 'var(--green)' : 'var(--red)';
+            const sign = isPos ? '+' : '';
+            chart.innerHTML = '<div style="text-align: center;"><div style="font-size: 2.5rem; font-weight: 700; color: var(--primary);">$' + data.price.toFixed(2) + '</div><div style="font-size: 1.1rem; color: ' + color + '; margin-top: 0.5rem;">' + sign + data.change.toFixed(2) + ' (' + sign + data.changePercent.toFixed(2) + '%)</div><div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Volume: ' + formatVolume(data.volume) + '</div></div>';
         }
         
-        const metricRows = card.querySelectorAll('.metric-row');
-        if (metricRows.length >= 5) {
-            metricRows[0].querySelector('.metric-value').textContent = 
-                stockData.peRatio !== 'N/A' ? stockData.peRatio.toFixed(2) : 'N/A';
-            
-            const dividendValue = metricRows[1].querySelector('.metric-value');
-            dividendValue.textContent = `${stockData.dividendYield.toFixed(2)}%`;
-            dividendValue.className = 'metric-value ' + (stockData.dividendYield > 0 ? 'positive' : '');
-            
-            metricRows[4].querySelector('.metric-value').textContent = stockData.marketCap;
+        const rows = card.querySelectorAll('.metric-row');
+        if (rows.length >= 5) {
+            rows[0].querySelector('.metric-value').textContent = data.peRatio !== 'N/A' ? data.peRatio.toFixed(2) : 'N/A';
+            const divVal = rows[1].querySelector('.metric-value');
+            divVal.textContent = data.dividendYield.toFixed(2) + '%';
+            divVal.className = 'metric-value ' + (data.dividendYield > 0 ? 'positive' : '');
+            rows[4].querySelector('.metric-value').textContent = data.marketCap;
         }
         
-        console.log(`✅ Updated card for ${stockData.symbol}`);
+        console.log('✅ Updated card for ' + data.symbol);
     }
 }
 
 function showStockLoadingState() {
-    const stockCards = document.querySelectorAll('.badge-stock');
-    stockCards.forEach(badge => {
-        const card = badge.closest('.card');
-        const chartPlaceholder = card?.querySelector('.chart-placeholder');
-        if (chartPlaceholder) {
-            chartPlaceholder.innerHTML = `
-                <div style="text-align: center; color: var(--text-muted);">
-                    <div style="font-size: 1.2rem;">Loading...</div>
-                    <div style="font-size: 0.9rem; margin-top: 0.5rem;">⏳</div>
-                </div>
-            `;
+    const badges = document.querySelectorAll('.badge-stock');
+    badges.forEach(b => {
+        const card = b.closest('.card');
+        const chart = card && card.querySelector('.chart-placeholder');
+        if (chart) {
+            chart.innerHTML = '<div style="text-align: center; color: var(--text-muted);"><div style="font-size: 1.2rem;">Loading...</div><div style="font-size: 0.9rem; margin-top: 0.5rem;">⏳</div></div>';
         }
     });
 }
@@ -176,25 +152,22 @@ async function loadStockData() {
     
     try {
         for (let i = 0; i < STOCKS_TO_TRACK.length; i++) {
-            const symbol = STOCKS_TO_TRACK[i];
-            
+            const sym = STOCKS_TO_TRACK[i];
             try {
-                const quote = await fetchFMPQuote(symbol);
-                const profile = await fetchFMPProfile(symbol);
-                const stockData = calculateStockMetrics(quote, profile);
-                updateStockCard(stockData, i);
-                
+                const quote = await fetchFMPQuote(sym);
+                const profile = await fetchFMPProfile(sym);
+                const data = calculateStockMetrics(quote, profile);
+                updateStockCard(data, i);
                 if (i < STOCKS_TO_TRACK.length - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(r => setTimeout(r, 500));
                 }
-            } catch (error) {
-                console.error(`Failed to load ${symbol}:`, error);
+            } catch (e) {
+                console.error('Failed to load ' + sym + ':', e);
             }
         }
-        
         console.log('✅ Stock data loaded successfully!');
-    } catch (error) {
-        console.error('Stock loading error:', error);
+    } catch (e) {
+        console.error('Stock loading error:', e);
     }
 }
 
@@ -204,14 +177,14 @@ if (document.readyState === 'loading') {
     loadStockData();
 }
 
-setInterval(loadStockData, 5 * 60 * 1000);
+setInterval(loadStockData, 300000);
 
 window.stockAPI = {
     refresh: loadStockData,
-    clearCache: () => {
-        STOCKS_TO_TRACK.forEach(symbol => {
-            localStorage.removeItem(`fmp_quote_${symbol}`);
-            localStorage.removeItem(`fmp_profile_${symbol}`);
+    clearCache: function() {
+        STOCKS_TO_TRACK.forEach(function(s) {
+            localStorage.removeItem('fmp_quote_' + s);
+            localStorage.removeItem('fmp_profile_' + s);
         });
         console.log('🗑️ Cache cleared');
     }
@@ -220,33 +193,33 @@ window.stockAPI = {
 console.log('📈 Stock API loaded!');
 ```
 
-7. Scroll to bottom
-8. Click **"Commit changes"**
-9. Click **"Commit changes"** again in the popup
+### **Step 3: Save It**
 
----
+1. Scroll to bottom
+2. Click **"Commit changes"**
+3. Click **"Commit changes"** again
 
-## ✅ **YOUR SITE IS NOW COMPLETE!**
+### **Step 4: Test**
 
-After you commit:
-1. Wait **1-2 minutes**
+1. Wait **2 minutes**
 2. Go to **Actions** tab - wait for green checkmark ✅
 3. Go to your live site
 4. Press **Cmd+Shift+R** (hard refresh)
-5. Open console (Cmd+Option+I)
+5. Open console
 
-**You should see:**
+---
+
+## ✅ **WHAT YOU SHOULD SEE:**
 ```
 📈 Stock API loaded!
 🚀 Loading stock data...
-🔄 Fetching quote for AAPL...
+🔄 Fetching quote for AAPL
 ✅ Updated card for AAPL
-🔄 Fetching quote for MSFT...
+🔄 Fetching quote for MSFT
 ✅ Updated card for MSFT
-🔄 Fetching quote for O...
+🔄 Fetching quote for O
 ✅ Updated card for O
 ✅ Stock data loaded successfully!
 🏈 Sports module loaded!
-🏀 Loading sports data...
-✅ Updated 4 news articles
+✅ Updated 6 news articles
 ✅ Sports data loaded!
